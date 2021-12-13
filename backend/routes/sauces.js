@@ -8,7 +8,8 @@ router.post("/", (req, res, next) => {
     ...req.body
   })
   console.log(req.body)
-  Sauces.save();
+  Sauces.save()
+  res.status(201).json({message : "sauces creés"})
   next();
 })
 router.get("/", (req, res, next) => {
