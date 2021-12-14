@@ -16,8 +16,8 @@ app.use((req,res,next) => {
 const mongoose = require('mongoose');
 
 //// importation de la route user ///
+const userLoginRoutes = require("./routes/usersLogin");
 const usersRegisterRoutes = require("./routes/usersRegister");
-const usersLoginRoutes = require("./routes/usersLogin");
 const saucesRoutes = require("./routes/sauces");
 
 //// liaison de la base de donneé mongoose ////
@@ -28,8 +28,8 @@ mongoose.connect('mongodb+srv://Antho78:admin@projet6-backend.5nn9s.mongodb.net/
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 
-app.use("/api/auth/login", usersLoginRoutes);
 app.use("/api/auth/signup", usersRegisterRoutes);
+app.use("/api/auth/login", userLoginRoutes);
 app.use("/api/sauces", saucesRoutes);
 
 module.exports = app;

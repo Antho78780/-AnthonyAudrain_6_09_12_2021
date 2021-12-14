@@ -1,20 +1,17 @@
 const express = require("express");
 
 const router = express.Router();
-
-const usersLogin = require("../models/usersLogin");
+const usersRegister = require("../models/usersRegister");
 
 router.post("/", (req, res, next)=> {
-    const UsersLogin = new usersLogin({
-        ...req.body
-    })
-    console.log(req.body);
-    UsersLogin.save()
-    res.status(201).json({message : "Utilisateur connecté"})
-    next();
-})
-router.get("/", (req, res, next) => {
-    res.status(200).json();
+   usersRegister.findOne({email : req.body.email})
+   .then((usersRegister) => {
+       if(!usersRegister) {
+           return res.status(400).json({error : "utilisateur inexistant"})
+       }
+       res.status(200).json({message : "utilisateur connécté"});
+       next();
+   })
 })
 
 
