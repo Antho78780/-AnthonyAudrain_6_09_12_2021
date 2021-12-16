@@ -1,6 +1,6 @@
 //// importation de express ///
 const express = require("express");
- 
+const jsonToken = require("jsonwebtoken");
 //// importation de la function router qui viens d'express ///
 const router = express.Router();
 
@@ -15,11 +15,15 @@ router.post("/", (req, res, next)=> {
            res.status(404).json({error : "compte introuvable"})
        }
        else {
-          res.status(200).json({message :"compte connecté"})
+          res.status(200).json({
+              message : "compte connecté",
+              userId : usersRegister._id,
+              token : "token"  
+          })
        }
-       
    })
 })
+
 
 //// exportation du module router ///
 module.exports = router;

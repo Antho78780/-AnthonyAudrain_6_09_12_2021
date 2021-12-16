@@ -20,11 +20,12 @@ router.post("/",(req,res,next) => {
         password : hash
       });
       UsersRegister.save();
-      res.status(201).json({message : "Utilisateur créer"});
+      res.status(201).json({message : "utilisateur créer et enregistré dans la base de donnée"});
       next();
   })
   .catch((error) => res.status(404).json({error}))
 })
+
 
 //// exportation du router ////
   module.exports = router;
