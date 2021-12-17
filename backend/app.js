@@ -1,11 +1,13 @@
-//// imporation de express ////
+//// imporation du package express ////
 const express = require("express");
 
+//// création de app qui va utilisé la function express /// 
 const app = express();
 
+//// utilisation de app qui va convertir le corp de mes requetes en json ////
 app.use(express.json());
 
-/// importation de la base de données  mongoose ////
+/// importation du package mongoose ////
 const mongoose = require('mongoose');
 
 //// importation de routes ///
@@ -19,7 +21,7 @@ mongoose.connect('mongodb+srv://Antho78:admin@projet6-backend.5nn9s.mongodb.net/
   .then(() =>console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
   
-///// utilisation du cors(Cross-origin resource sharing) ////
+///// utilisation de cors(Cross-origin resource sharing) ////
 app.use((req,res,next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
