@@ -11,8 +11,8 @@ app.use(express.json());
 const mongoose = require('mongoose');
 
 //// importation de routes ///
-const userLoginRoutes = require("./routes/usersLogin");
-const usersRegisterRoutes = require("./routes/usersRegister");
+const usersRoutes = require("./routes/users");
+const sauces = require("./routes/sauces");
 
 //// liaison à la base de donneé mongoose ////
 mongoose.connect('mongodb+srv://Antho78:admin@projet6-backend.5nn9s.mongodb.net/Project?retryWrites=true&w=majority',
@@ -29,8 +29,9 @@ app.use((req,res,next) => {
   next();
 })
 //// utilisation des endPoints et API ////
-app.use("/api/auth/signup", usersRegisterRoutes);
-app.use("/api/auth/login", userLoginRoutes);
+
+app.use("/api/auth", usersRoutes);
+app.use("/api", sauces)
 
 //// exportation du module app ///
 module.exports = app;

@@ -5,13 +5,13 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
 //// création du schema Register ////
-const shemaUsersRegister = mongoose.Schema({
+const shemaUsers = mongoose.Schema({
     email: { type: String, required: true, unique: true},
     password: {type: String, required: true},
 });
 
 //// utilisation du package email unique ////
-shemaUsersRegister.plugin(uniqueValidator);
+shemaUsers.plugin(uniqueValidator);
 
 ///// exportation du schema Register ////
-module.exports = mongoose.model("usersRegister", shemaUsersRegister);
+module.exports = mongoose.model("users", shemaUsers);
