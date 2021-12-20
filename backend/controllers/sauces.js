@@ -1,4 +1,4 @@
-
+const modelUsers = require("../models/users");
 const modelSauce = require("../models/sauces");
 
 exports.sauce = (req, res) => {
@@ -14,13 +14,13 @@ exports.sauceId = (req, res) => {
 }
 
 exports.sendSauce = (req, res) => {
-    const Sauce = new modelSauce({
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
-        likes : 0,
-        dislikes : 0,
-        usersLiked : [],
-        usersDisliked : [],
+    const sauce = new modelSauce({
+        likes: 0,
+        dislikes: 0,
+        usersLiked: [],
+        usersDisliked: [],
     })
-    Sauce.save();
+    sauce.save();
+    console.log(sauce);
     res.status(201).json({message : "Sauce créer"});
 }
