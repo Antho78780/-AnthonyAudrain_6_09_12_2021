@@ -7,25 +7,23 @@ exports.sauce = (req, res) => {
     .catch(error => res.status(400).json({error}));
 }
 exports.sauceId = (req, res) => {
-    res.status(200).json({message : "Sauce seule"})
+    modelSauce.findOne({_id : req.params.id})
+    .then((idSauce) => res.status(200).json(idSauce))
+    .catch((error) => res.status(404).json({error}));
+    console.log(req.params);
 }
-
 exports.sendSauce = (req, res) => {
-    const sauceObject = JSON.parse(req.body.sauce);
-    console.log(sauceObject);
-    const Sauce = new modelSauce({
-        userId: sauceObject.userId,
-        name: sauceObject.name,
-        manufacturer: sauceObject.manufacturer,
-        description: sauceObject.description,
-        mainPepper: sauceObject.mainPepper,
-        heat: sauceObject.heat,
-        imageUrl:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        likes: 0,
-        dislikes: 0,
-        usersLiked: [],
-        usersDisliked: []
-    })
-    Sauce.save();
-    res.status(201).json({message : "Sauce créer"});
+        const sauceObject = JSON.parse(req.body.sauce);
+        const Sauce = new modelSauce({
+            userId: sauceObject.userId,
+            ...sauceObject,
+            imageUrl:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            likes: 0,
+            dislikes: 0,
+            usersLiked: [],
+            usersDisliked: []
+        })
+        Sauce.save();
+        console.log(Sauce)
+        res.status(201).json({message : "Sauce créer"});
 }

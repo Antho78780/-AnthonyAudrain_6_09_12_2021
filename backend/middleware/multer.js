@@ -8,14 +8,14 @@ const MYME_TYPES = {
 }
 
 const stockage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "images")
+    destination: (req, file, callback) => {
+        callback(null, "images")
     },
-    filename: (req, file, cb) => {
+    filename: (req, file, callback) => {
         const name = file.originalname.split(' ').join('_');
         const extension = MYME_TYPES[file.mimetype];
-        cb(null, name + Date.now() + '.' + extension);
+        callback(null, name + Date.now() + '.' + extension);
     }
 });
 
-module.exports = multer({stockage : stockage}).single("image");
+module.exports = multer({storage : stockage}).single("image");

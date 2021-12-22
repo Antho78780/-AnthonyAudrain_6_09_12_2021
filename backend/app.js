@@ -4,6 +4,8 @@ const express = require("express");
 //// création de app qui va utilisé la function express /// 
 const app = express();
 
+const path = require("path");
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -33,6 +35,7 @@ app.use((req,res,next) => {
 })
 //// utilisation des endPoints et API ////
 
+app.use("/images", express.static(path.join(__dirname, "images")))
 app.use("/api/auth", usersRoutes);
 app.use("/api", sauces)
 
