@@ -1,3 +1,4 @@
+//// implantation du package JSON TOKEN ////
 const jsonToken = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {

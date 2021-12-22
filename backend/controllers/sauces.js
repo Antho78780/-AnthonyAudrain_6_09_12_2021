@@ -1,18 +1,21 @@
-const modelUsers = require("../models/users");
+//// récupération du model sauce ////
 const modelSauce = require("../models/sauces");
 
-exports.sauce = (req, res) => {
+const fs = require("fs");
+
+exports.getAllSauce = (req, res) => {
     modelSauce.find()
     .then (sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({error}));
 }
-exports.sauceId = (req, res) => {
+
+exports.getSauceId = (req, res) => {
     modelSauce.findOne({_id : req.params.id})
     .then((idSauce) => res.status(200).json(idSauce))
     .catch((error) => res.status(404).json({error}));
-    console.log(req.params);
 }
-exports.sendSauce = (req, res) => {
+
+exports.postSauce = (req, res) => {
         const sauceObject = JSON.parse(req.body.sauce);
         const Sauce = new modelSauce({
             userId: sauceObject.userId,
@@ -26,4 +29,32 @@ exports.sendSauce = (req, res) => {
         Sauce.save();
         console.log(Sauce)
         res.status(201).json({message : "Sauce créer"});
+}
+
+exports.deleteSauce = (req, res) => {
+    modelSauce.findOne({_id : req.params.id})
+    .then(() => {
+        const filename = s.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+            modelSauce.deleteOne({_id: req.params.id})
+            .then(() => res.status(201).json({message : "Objet supprimé"}))
+            .catch((error) => res.status(404).json({error}));
+        });
+    })
+    .catch((error) => res.status(404).json({error}))
+}
+
+exports.modifSauce = (req, res) => {
+    const modifSauce = req.file ?
+    {
+        ...JSON.parse(req.body.sauce),
+        imageUrl:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    } : {...req.body};
+    modelSauce.updateOne({_id: req.params.id}, {...modifSauce})
+    .then(() => res.status(200).json({message : "Objet modifié"}))
+    .catch((error) => res.status(404).json({error}));
+}
+
+exports.modifLikes = (req, res) => {
+    res.status(200).json({message: "like ajouté"});
 }
