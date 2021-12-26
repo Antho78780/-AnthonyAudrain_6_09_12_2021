@@ -32,16 +32,16 @@ exports.postSauce = (req, res) => {
 }
 
 exports.deleteSauce = (req, res) => {
-    modelSauce.findOne({_id : req.params.id})
-    .then(() => {
-        const filename = imageUrl.split("/images/")[1];
+    modelSauce.findOne({_id: req.params.id})
+    .then(sauce => {
+        const filename = sauce.imageUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {
             modelSauce.deleteOne({_id: req.params.id})
             .then(() => res.status(201).json({message : "Objet supprimé"}))
             .catch((error) => res.status(404).json({error}));
-        });
+        })
     })
-    .catch((error) => res.status(404).json({error}))
+    .catch(error => res.status(400).json({error}))
 }
 
 exports.modifSauce = (req, res) => {
