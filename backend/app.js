@@ -4,6 +4,7 @@ const express = require("express");
 //// création de app qui va utilisé la function express /// 
 const app = express();
 
+/// importation du package path ////
 const path = require("path");
 
 const dotenv = require("dotenv");

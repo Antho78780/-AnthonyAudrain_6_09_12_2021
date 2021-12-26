@@ -1,14 +1,15 @@
 //// importations du package express ///
 const express = require("express");
 
-//// imporation de la function router qui viens du package express ////
+//// imporation de la function router qui viens d'express ////
 const router = express.Router();
 
+//// importation du controllers Utilisateur ///
 const controllersUsers = require("../controllers/users");
 
-//// création de la route post ////
+//// utilisation de router pour créer les endPoints ////
 router.post("/signup", controllersUsers.signup);
 router.post("/login", controllersUsers.login);
   
-//// exportation du router ////
+//// exportation du module router ////
   module.exports = router;

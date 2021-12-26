@@ -7,6 +7,7 @@ const jsonToken = require("jsonwebtoken");
 //// importation du package bcrypt ////
 const bcrypt = require("bcrypt");
 
+//// function pour pour que l'utilisateur se connecte à son compte sur le site web ////
 exports.login = (req, res) => {
     modelUsers.findOne({email : req.body.email})
     .then((modelUsers) => {
@@ -37,6 +38,7 @@ exports.login = (req, res) => {
     console.log(req.body)
 }
 
+//// function pour que l'utilisateur s'enregistre sur le site web ////
 exports.signup = (req, res) => {
     bcrypt.hash(req.body.password, 5)
     .then(async(hash) => {
