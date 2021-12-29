@@ -1,4 +1,4 @@
-//// imporation du model UserRegister ////
+//// imporation du schéma model UserRegister ////
 const modelUsers = require("../models/users");
 
 //// importation du package TOKEN ////
@@ -41,13 +41,14 @@ exports.login = (req, res) => {
 //// function pour que l'utilisateur s'enregistre sur le site web ////
 exports.signup = (req, res) => {
     bcrypt.hash(req.body.password, 5)
-    .then(async(hash) => {
+    .then((hash) => {
         const UsersRegister = new modelUsers({
           email : req.body.email,
           password : hash
         });
-        await UsersRegister.save();
-      res.status(201).json({message : "utilisateur créer et enregistré dans la base de donnée"});
+        UsersRegister.save()
+      .then(() => res.status(201).json({message : "utilisateur créer et enregistré dans la base de donnée"}))
+      .catch((error) => res.status(400).json({error}))
     })
     .catch((error) => res.status(401).json({error}));
     console.log(req.body)
