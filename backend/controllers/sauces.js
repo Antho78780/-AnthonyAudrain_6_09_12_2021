@@ -10,6 +10,17 @@ exports.getAllSauces = (req, res) => {
     .catch(error => res.status(400).json({error}));
 }
 
+//// function pour récupérer les informations de la sauce ////
+exports.getSauce = (req, res) => {
+    modelSauce.findOne({_id : req.params.id})
+    .then((sauce) => {
+        res.status(200).json(sauce);
+        console.log("<---- Sauce dans la base de donnée ---->")
+        console.log(sauce);
+    })
+    .catch((error) => res.status(400).json({error}));
+}
+
 //// function pour créer la sauce ////
 exports.postSauce = (req, res) => {
         const sauceObject = JSON.parse(req.body.sauce);
@@ -25,7 +36,7 @@ exports.postSauce = (req, res) => {
         Sauce.save()
         .then(() => res.status(201).json({message : "Sauce créer"}))
         .catch((error) => res.status(400).json({error}));
-        console.log("Sauce créer")
+        console.log("Sauce créer");
         console.log(req.body);
 }
 
@@ -41,6 +52,7 @@ exports.deleteSauce = (req, res) => {
         })
     })
     .catch(error => res.status(400).json({error}));
+    console.log("Sauce supprimé")
 }
 
 //// function pour modifié la sauce ////
@@ -57,7 +69,6 @@ exports.modifSauce = (req, res) => {
 
 //// function pour ajouté des likes ou en retiré ////
 exports.modifLikes = (req, res) => {
-        console.log(req.body)
        if (req.body.like == 1) {
        modelSauce.findOne({_id : req.params.id})
        .then(() => {
@@ -71,7 +82,7 @@ exports.modifLikes = (req, res) => {
            .then(() => res.status(200).json())
            .catch((err) => res.status(400).json({err}));
 
-           console.log("<--- USERID ET LIKE ---->")
+           console.log("<--- USERID ET LIKE ---->");
            console.log(req.body);
            console.log("like +1");
         })
@@ -81,6 +92,7 @@ exports.modifLikes = (req, res) => {
        modelSauce.findOne({_id : req.params.id})
        .then(() => {
            res.status(200).json()
+
            modelSauce.updateOne({usersDisliked : req.body.userId})
            .then(() => res.status(200).json())
            .catch((err) => res.status(400).json({err}));
@@ -89,7 +101,7 @@ exports.modifLikes = (req, res) => {
            .then(() => res.status(200).json())
            .catch((err) => res.status(400).json({err}));
 
-           console.log("<--- USERID ET DISLIKE ---->")
+           console.log("<--- USERID ET DISLIKE ---->");
            console.log(req.body);
            console.log("disLike +1");
         })
@@ -100,39 +112,32 @@ exports.modifLikes = (req, res) => {
         modelSauce.findOne({_id : req.params.id})
         .then((sauce) => {
             if(sauce.userId == sauce.usersLiked) {
-                console.log("USERID supprimé du tableau userLiked")
+                console.log("USERID supprimé du tableau userLiked");
                 modelSauce.updateOne({$pull : {usersLiked : req.body.userId}})
-                .then(() => {
-                    modelSauce.findOne({_id : req.params.id})
-                    .then(() => res.status(200).json())
-                    .catch((err) => res.status(400).json({err}));
-                })
+                .then(() => res.status(200).json())
+                .catch((err) => res.status(400).json({err}));
+
+                modelSauce.updateOne({likes : req.body.like})
+                .then(() => res.status(200).json())
+                .catch((err) => res.status(400).json({err}));
             }
 
             else if(sauce.userId == sauce.usersDisliked) {
-                console.log("USERID supprimé du tableau userDisLiked")
+                console.log("USERID supprimé du tableau userDisLiked");
                 modelSauce.updateOne({$pull : {usersDisliked : req.body.userId}})
-                .then(() => {
-                    modelSauce.findOne({_id : req.params.id})
-                    .then(() => res.status(200).json())
-                    .catch((err) => res.status(400).json({err}));
-                })
+                .then(() => res.status(200).json())
+                .catch((err) => res.status(400).json({err}));
+
+                modelSauce.updateOne({dislikes : req.body.like})
+                .then(() => res.status(200).json())
+                .catch((err) => res.status(400).json({err}));
             }
+            console.log(sauce)
         })
         .catch((err) => res.status(400).json({err}));
         console.log(req.body);
-        console.log("like = 0")
+        console.log("like = 0");
     }
     
 }
 
-//// function pour récupérer les informations de la sauce ////
-exports.getSauce = (req, res) => {
-    modelSauce.findOne({_id : req.params.id})
-    .then((sauce) => {
-        res.status(200).json(sauce);
-        console.log("<---- Sauce dans la base de donnée ---->",)
-        console.log(sauce);
-    })
-    .catch((error) => res.status(400).json({error}));
-}

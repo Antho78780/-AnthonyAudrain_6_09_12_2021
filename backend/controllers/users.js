@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 
 //// function pour pour que l'utilisateur se connecte à son compte sur le site web ////
 exports.login = (req, res) => {
+    console.log("<--- compte utilisateur ---- >")
     modelUsers.findOne({email : req.body.email})
     .then((modelUsers) => {
         if(!modelUsers) {
@@ -40,6 +41,7 @@ exports.login = (req, res) => {
 
 //// function pour que l'utilisateur s'enregistre sur le site web ////
 exports.signup = (req, res) => {
+    console.log("<---- Enregistration compte utilisateur ---->")
     bcrypt.hash(req.body.password, 5)
     .then((hash) => {
         const UsersRegister = new modelUsers({
