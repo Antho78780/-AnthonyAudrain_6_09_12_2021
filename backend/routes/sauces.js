@@ -19,7 +19,7 @@ router.get("/sauces/:id",auth, controllersSauces.getSauce);
 router.post("/sauces",auth, multer, controllersSauces.postSauce);
 router.delete("/sauces/:id",auth, controllersSauces.deleteSauce);
 router.put("/sauces/:id",auth, multer, controllersSauces.modifSauce);
-router.post("/sauces/:id/like",auth, controllersSauces.modifLikes)
+router.post("/sauces/:id/like", controllersSauces.modifLikes)
 
 /// exportation du module router ////
 module.exports = router;
