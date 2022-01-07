@@ -72,12 +72,12 @@ exports.modifLikes = (req, res) => {
     .then((sauce) => {
         res.status(200).json();
 
-        if(req.body.like == 1 && sauce.userId == req.body.userId) {
+        if(req.body.like == 1 && sauce.userId == req.body.userId || req.body.like == 1 && sauce.userId != req.body.userId) {
+            const resultLike = req.body.like + sauce.likes;
+
             sauce.updateOne({$push : {usersLiked : req.body.userId}})
             .then(() => res.status(200).json())
             .catch((err) => res.status(400).json({err}));
-
-            const resultLike = req.body.like + sauce.likes;
 
             sauce.updateOne({likes : resultLike})
             .then(() => res.status(200).json())
@@ -87,26 +87,16 @@ exports.modifLikes = (req, res) => {
             console.log(req.body);
             console.log("like 1");
         }
-        else if(req.body.like == 1 && sauce.userId != req.body.userId) {
-            const resultLike2 = req.body.like + sauce.likes;
-            
-            sauce.updateOne({$push : {usersLiked : req.body.userId}})
-            .then(() => res.status(200).json())
-            .catch((err) => res.status(400).json({err}));
+        else if (req.body.like == -1 && sauce.userId == req.body.userId || req.body.like == -1 && sauce.userId != req.body.userId) {
+            req.body.like = 0;
+            req.body.dislike = 1;
+            const resultDisLike = req.body.dislike + sauce.dislikes;
 
-            sauce.updateOne({likes : resultLike2})
-            .then(() => res.status(200).json())
-            .catch((err) => res.status(400).json({err}));
-
-            console.log(req.body);
-        }
-       
-        else if (req.body.like == -1) {
            sauce.updateOne({$push : {usersDisliked : req.body.userId}})
             .then(() => res.status(200).json())
             .catch((err) => res.status(400).json({err}));
 
-           sauce.updateOne({dislikes : req.body.like})
+           sauce.updateOne({dislikes : resultDisLike})
             .then(() => res.status(200).json())
             .catch((err) => res.status(400).json({err}));
 
@@ -114,9 +104,9 @@ exports.modifLikes = (req, res) => {
             console.log(req.body);
             console.log("disLike 1");
         }
-          if(req.body.like == 0) {
-            console.log("USERID supprimé du tableau userLiked");
-           sauce.updateOne({$pull : {usersLiked : req.body.userId}})
+        else if(req.body.like == 0 && sauce.likes) {
+            console.log("USERID supprimé du tableau usersLiked");
+            sauce.updateOne({$pull : {usersLiked : req.body.userId}})
             .then(() => res.status(200).json())
             .catch((err) => res.status(400).json({err}));
 
@@ -126,19 +116,18 @@ exports.modifLikes = (req, res) => {
 
             console.log(req.body); 
         }
+        else if(req.body.like == 0 && sauce.dislikes) {
+            console.log("USERID supprimé du tableau usersDisliked");
 
-        if(req.body.like -1) {
-            console.log("USERID supprimé du tableau userDisLiked");
-
-           sauce.updateOne({$pull : {usersDisliked : req.body.userId}})
+            sauce.updateOne({$pull : {usersDisliked : req.body.userId}})
             .then(() => res.status(200).json())
             .catch((err) => res.status(400).json({err}));
 
-           sauce.updateOne({dislikes : req.body.like})
+           sauce.updateOne({dislikes : --sauce.dislikes})
             .then(() => res.status(200).json())
             .catch((err) => res.status(400).json({err}));
 
-            console.log(req.body);
+            console.log(req.body); 
         }
     })
        
