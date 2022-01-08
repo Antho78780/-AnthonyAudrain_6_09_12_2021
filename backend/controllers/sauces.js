@@ -2,7 +2,6 @@
 const modelSauce = require("../models/sauces");
 
 const fs = require("fs");
-const { Z_UNKNOWN } = require("zlib");
 
 //// function pour récupérer toutes les sauces ////
 exports.getAllSauces = (req, res) => {
@@ -72,7 +71,7 @@ exports.modifLikes = (req, res) => {
     .then((sauce) => {
         res.status(200).json();
 
-        if(req.body.like == 1 && sauce.userId == req.body.userId || req.body.like == 1 && sauce.userId != req.body.userId) {
+        if(req.body.like == 1) {
             const resultLike = req.body.like + sauce.likes;
 
             sauce.updateOne({$push : {usersLiked : req.body.userId}})
@@ -87,7 +86,7 @@ exports.modifLikes = (req, res) => {
             console.log(req.body);
             console.log("like 1");
         }
-        else if (req.body.like == -1 && sauce.userId == req.body.userId || req.body.like == -1 && sauce.userId != req.body.userId) {
+        else if (req.body.like == -1) {
             req.body.like = 0;
             req.body.dislike = 1;
             const resultDisLike = req.body.dislike + sauce.dislikes;
@@ -106,6 +105,7 @@ exports.modifLikes = (req, res) => {
         }
         else if(req.body.like == 0 && sauce.likes) {
             console.log("USERID supprimé du tableau usersLiked");
+            
             sauce.updateOne({$pull : {usersLiked : req.body.userId}})
             .then(() => res.status(200).json())
             .catch((err) => res.status(400).json({err}));
@@ -129,6 +129,7 @@ exports.modifLikes = (req, res) => {
 
             console.log(req.body); 
         }
+        console.log(sauce);
     })
        
 }
