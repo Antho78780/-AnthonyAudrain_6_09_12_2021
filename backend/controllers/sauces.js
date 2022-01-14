@@ -6,7 +6,12 @@ const fs = require("fs");
 //// function pour récupérer toutes les sauces ////
 exports.getAllSauces = (req, res) => {
     modelSauce.find()
-    .then ((sauces) => res.status(200).json(sauces))
+    .then ((sauces) => 
+    {
+        console.log("<---Affichage de toute les sauces ---->")
+        console.log(sauces);
+        res.status(200).json(sauces);
+    })
     .catch(error => res.status(400).json({error}));
 }
 
@@ -14,6 +19,9 @@ exports.getAllSauces = (req, res) => {
 exports.getSauce = (req, res) => {
     modelSauce.findOne({_id : req.params.id})
     .then((sauce) => {
+
+        console.log("<---Affichage de la sauce ---->")
+        console.log(sauce);
         res.status(200).json(sauce);
     })
     .catch((error) => res.status(400).json({error}));
@@ -32,7 +40,11 @@ exports.postSauce = (req, res) => {
             usersDisliked: []
         })
         Sauce.save()
-        .then(() => res.status(201).json({message : "Sauce créer"}))
+        .then((sauce) => {
+            console.log("<---envoie de la sauce à la base de donnée---->");
+            console.log(sauce);
+            res.status(201).json({message : "Sauce créer"})
+        })
         .catch((error) => res.status(400).json({error}));
         console.log("Sauce créer");
         console.log(req.body);
@@ -50,7 +62,6 @@ exports.deleteSauce = (req, res) => {
         })
     })
     .catch(error => res.status(400).json({error}));
-    console.log("Sauce supprimé")
 }
 
 //// function pour modifié la sauce ////

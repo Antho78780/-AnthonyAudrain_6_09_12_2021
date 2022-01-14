@@ -14,8 +14,8 @@ const multer = require("../middleware/multer");
 const controllersSauces = require("../controllers/sauces");
 
 //// utilisation de router pour créer les endPoints ///
-router.get("/sauces",auth, controllersSauces.getAllSauces);
-router.get("/sauces/:id",auth, controllersSauces.getSauce);
+router.get("/sauces", controllersSauces.getAllSauces);
+router.get("/sauces/:id", controllersSauces.getSauce);
 router.post("/sauces",auth, multer, controllersSauces.postSauce);
 router.delete("/sauces/:id",auth, controllersSauces.deleteSauce);
 router.put("/sauces/:id",auth, multer, controllersSauces.modifSauce);
