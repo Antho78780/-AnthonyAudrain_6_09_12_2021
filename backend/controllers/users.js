@@ -62,7 +62,7 @@ exports.signup = (req, res) => {
         });
         UsersRegister.save()
       .then(() => res.status(201).json({message : "utilisateur créer et enregistré dans la base de donnée"}))
-      .catch((error) => res.status(400).json({error}))
+      .catch((error) => res.status(400).json({message : error.message}))
     })
     .catch((error) => res.status(401).json({error}));
     console.log(req.body)
